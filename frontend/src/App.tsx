@@ -1,13 +1,37 @@
-import './App.css';
+import * as React from "react"
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
+import "./App.css"
 
-function App() {
+import { Task } from "./components/Task"
+import { AddTask } from "./components/AddTask"
+import { addTask } from "./store/actionCreators"
+import { Dispatch } from "redux"
+
+const App: React.FC = () => {
+  const tasks: readonly ITask[] = useSelector(
+    (state: TaskState) => state.tasks,
+    shallowEqual
+  )
+
+  const dispatch: Dispatch<any> = useDispatch()
+
+  const saveTask = React.useCallback(
+    (task: ITask) => dispatch(addTask(task)),
+    [dispatch]
+  )
+
   return (
-    <div className="App">
-      <header className="App-header">
-        Hello World!
-      </header>
-    </div>
-  );
+    <main>
+      <h1>My Tasks</h1>
+      <AddTask saveTask={saveTask} />
+      {tasks.map((task: ITask) => (
+        <Task
+          key={task.id}
+          task={task}
+        />
+      ))}
+    </main>
+  )
 }
 
-export default App;
+export default App
