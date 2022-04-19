@@ -4,20 +4,21 @@ import { CreateTaskDto } from './task.dto';
 import { Task } from './task.entity';
 import { TaskService } from './task.service';
 
-@Controller('task')
+@Controller('tasks')
 export class TaskController {
   @Inject(TaskService)
   private readonly service: TaskService;
+
+  @Get()
+  public getTasks(): Promise<Task[]> {
+    return this.service.getTasks();
+  }
 
   @Get(':id')
   public getTask(@Param('id', ParseIntPipe) id: number): Promise<Task> {
     return this.service.getTask(id);
   }
 
-  // @Post()
-  // public createTask(@Body() body: CreateTaskDto): Promise<Task> {
-  //   return this.service.createTask(body);
-  // }
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   createTask(@Body() body: CreateTaskDto, @UploadedFile() file: Express.Multer.File) {

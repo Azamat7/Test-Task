@@ -10,12 +10,19 @@ const reducer = (
   action: TaskAction
 ): TaskState => {
   switch (action.type) {
+
     case actionTypes.GET_TASKS:
+      console.log('new state:', {
+        ...state,
+        tasks:action.payload,
+        loading:false
+      });
       return {
         ...state,
         tasks:action.payload,
         loading:false
       }
+
     case actionTypes.ADD_TASK:
       const newTask: ITask = {
         id: Math.random(),

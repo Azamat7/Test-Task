@@ -38,12 +38,6 @@ export const AddTask: React.FC<Props> = ({ saveTask }) => {
         onChange={handleTaskData}
       />
       <input
-        type="text"
-        id="image_url"
-        placeholder="Url"
-        onChange={handleTaskData}
-      />
-      <input
         type="file"
         id="file"
         placeholder="File"

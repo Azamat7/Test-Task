@@ -12,7 +12,7 @@ const App: React.FC = () => {
     (state: TaskState) => state.tasks,
     shallowEqual
   )
-  console.log(tasks);
+
   React.useEffect(() => {
     getTasks()(dispatch);
   },[])
