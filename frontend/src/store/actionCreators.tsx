@@ -2,7 +2,6 @@ import * as actionTypes from "./actionTypes"
 import axios from 'axios'
 
 export function setLoading(loading: boolean, dispatch: DispatchType) {
-  console.log('setLoading', loading);
   const action: TaskAction = {
     type: actionTypes.SET_LOADING,
     payload: loading,

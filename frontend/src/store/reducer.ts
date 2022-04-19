@@ -25,7 +25,7 @@ const reducer = (
 
     case actionTypes.ADD_TASK:
       const newTask: ITask = {
-        id: Math.random(),
+        id: action.payload.id,
         name: action.payload.name,
         image_url: action.payload.image_url,
       }
