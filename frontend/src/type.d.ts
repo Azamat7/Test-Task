@@ -6,11 +6,12 @@ interface ITask {
 
 type TaskState = {
   tasks: Itask[]
+  loading: boolean
 }
 
 type TaskAction = {
   type: string
-  task: ITask
+  payload: any
 }
 
 type DispatchType = (args: TaskAction) => TaskAction

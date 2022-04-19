@@ -14,6 +14,15 @@ export const AddTask: React.FC<Props> = ({ saveTask }) => {
     })
   }
 
+  const handleTaskDataFile = (e: React.FormEvent<HTMLInputElement>) => {
+    const files = (e.target as HTMLInputElement).files
+    if (!files) return;
+    setTask({
+      ...task,
+      [e.currentTarget.id]: files[0],
+    })
+  }
+
   const addNewTask = (e: React.FormEvent) => {
     e.preventDefault()
     console.log(task)
@@ -38,7 +47,7 @@ export const AddTask: React.FC<Props> = ({ saveTask }) => {
         type="file"
         id="file"
         placeholder="File"
-        onChange={handleTaskData}
+        onChange={handleTaskDataFile}
       />
       <button disabled={task === undefined ? true : false}>
         Add task

@@ -4,7 +4,7 @@ import "./App.css"
 
 import { Task } from "./components/Task"
 import { AddTask } from "./components/AddTask"
-import { addTask } from "./store/actionCreators"
+import { addTask, getTasks } from "./store/actionCreators"
 import { Dispatch } from "redux"
 
 const App: React.FC = () => {
@@ -12,11 +12,15 @@ const App: React.FC = () => {
     (state: TaskState) => state.tasks,
     shallowEqual
   )
+  console.log(tasks);
+  React.useEffect(() => {
+    getTasks()(dispatch);
+  },[])
 
   const dispatch: Dispatch<any> = useDispatch()
 
   const saveTask = React.useCallback(
-    (task: ITask) => dispatch(addTask(task)),
+    (task: any) => addTask(task)(dispatch),
     [dispatch]
   )
 

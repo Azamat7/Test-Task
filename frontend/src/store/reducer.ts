@@ -2,6 +2,7 @@ import * as actionTypes from "./actionTypes"
 
 const initialState: TaskState = {
   tasks: [],
+  loading: true
 }
 
 const reducer = (
@@ -9,11 +10,17 @@ const reducer = (
   action: TaskAction
 ): TaskState => {
   switch (action.type) {
+    case actionTypes.GET_TASKS:
+      return {
+        ...state,
+        tasks:action.payload,
+        loading:false
+      }
     case actionTypes.ADD_TASK:
       const newTask: ITask = {
         id: Math.random(),
-        name: action.task.name,
-        image_url: action.task.image_url,
+        name: action.payload.name,
+        image_url: action.payload.image_url,
       }
       return {
         ...state,
