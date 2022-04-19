@@ -2,7 +2,7 @@ import * as actionTypes from "./actionTypes"
 
 const initialState: TaskState = {
   tasks: [],
-  loading: true
+  loading: false
 }
 
 const reducer = (
@@ -11,16 +11,16 @@ const reducer = (
 ): TaskState => {
   switch (action.type) {
 
-    case actionTypes.GET_TASKS:
-      console.log('new state:', {
+    case actionTypes.SET_LOADING:
+      return {
         ...state,
-        tasks:action.payload,
-        loading:false
-      });
+        loading:action.payload
+      }
+
+    case actionTypes.GET_TASKS:
       return {
         ...state,
         tasks:action.payload,
-        loading:false
       }
 
     case actionTypes.ADD_TASK:

@@ -4,6 +4,11 @@ interface ITask {
   image_url: string
 }
 
+interface TaskUpload {
+  name: string,
+  file: File
+}
+
 type TaskState = {
   tasks: Itask[]
   loading: boolean
@@ -11,7 +16,7 @@ type TaskState = {
 
 type TaskAction = {
   type: string
-  payload: any
+  payload: Itask | TaskUpload | boolean
 }
 
 type DispatchType = (args: TaskAction) => TaskAction

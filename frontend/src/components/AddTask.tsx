@@ -1,51 +1,69 @@
-import * as React from "react"
+import * as React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { addTask, setLoading } from "../store/actionCreators";
+import "./AddTask.css";
 
-type Props = {
-  saveTask: (task: ITask | any) => void
-}
+export const AddTask = () => {
+  const [task, setTask] = React.useState<string>('');
+  const [file, setFile] = React.useState<File | null>(null);
 
-export const AddTask: React.FC<Props> = ({ saveTask }) => {
-  const [task, setTask] = React.useState<ITask | {}>()
+  const dispatch: Dispatch<any> = useDispatch();
+  const saveTask = React.useCallback(
+    (task: TaskUpload) => addTask(task, dispatch),
+    [dispatch]
+  );
+
+  const loading: boolean = useSelector(
+    (state: TaskState) => state.loading,
+  )
 
   const handleTaskData = (e: React.FormEvent<HTMLInputElement>) => {
-    setTask({
-      ...task,
-      [e.currentTarget.id]: e.currentTarget.value,
-    })
-  }
+    setTask(e.currentTarget.value)
+  };
 
   const handleTaskDataFile = (e: React.FormEvent<HTMLInputElement>) => {
     const files = (e.target as HTMLInputElement).files
     if (!files) return;
-    setTask({
-      ...task,
-      [e.currentTarget.id]: files[0],
-    })
-  }
+    setFile(files[0]);
+  };
 
   const addNewTask = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(task)
-    saveTask(task)
-  }
+    setLoading(true, dispatch);
+    if (file !== null) {
+      saveTask({
+        name: task,
+        file
+      });
+    }
+    setTask('');
+    setFile(null);
+  };
+
+  const buttonDisabled = task === '' || file === null;
 
   return (
-    <form onSubmit={addNewTask} className="Add-task">
-      <input
-        type="text"
-        id="name"
-        placeholder="Task"
-        onChange={handleTaskData}
-      />
-      <input
-        type="file"
-        id="file"
-        placeholder="File"
-        onChange={handleTaskDataFile}
-      />
-      <button disabled={task === undefined ? true : false}>
-        Add task
-      </button>
-    </form>
-  )
-}
+    <div className="add-task">
+      <form onSubmit={addNewTask}>
+        <input
+          type="text"
+          id="name"
+          placeholder="Task"
+          value={task}
+          onChange={handleTaskData}
+        />
+        <input
+          type="file"
+          id="file"
+          placeholder="File"
+          onChange={handleTaskDataFile}
+        />
+        <button disabled={buttonDisabled} className={buttonDisabled ? 'disabled' : ''}>
+          Add task
+        </button>
+      </form>
+      {loading && <p>uploading the image...</p>}
+    </div>
+  );
+};
