@@ -5,21 +5,11 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class S3Service {
-  private readonly bucket;
-  private readonly access_key;
-  private readonly key_secret;
-
-  constructor(bucket, access_key, key_secret) {
-    this.bucket=bucket;
-    this.access_key = access_key;
-    this.key_secret = key_secret;
-  }
-
   @Inject(ConfigService)
   private readonly config: ConfigService;
 
   async uploadFile(file){
-    const AWS_S3_BUCKET = this.bucket;
+    const AWS_S3_BUCKET = this.config.get<string>('AWS_S3_BUCKET');;
     const { originalname } = file;
 
     return await this.s3_upload(file.buffer, AWS_S3_BUCKET, originalname, file.mimetype);
@@ -28,8 +18,8 @@ export class S3Service {
   async s3_upload(file, bucket, name, mimetype) {
     
     const s3 = new AWS.S3 ({
-        accessKeyId: this.access_key,
-        secretAccessKey: this.key_secret,
+        accessKeyId: this.config.get<string>('AWS_S3_ACCESS_KEY'),
+        secretAccessKey: this.config.get<string>('AWS_S3_SECRET_KEY'),
     });
 
     const params ={

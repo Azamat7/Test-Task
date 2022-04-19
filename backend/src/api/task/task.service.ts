@@ -1,16 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateTaskDto } from './task.dto';
 import { Task } from './task.entity';
-import { S3Service } from './s3.service';
+import { S3Service } from '../helpers/s3/s3.service';
 
 
 @Injectable()
 export class TaskService {
-  @Inject(ConfigService)
-  private readonly config: ConfigService;
+  @Inject(S3Service)
+  private readonly S3Service: S3Service;
 
   @InjectRepository(Task)
   private readonly repository: Repository<Task>;
@@ -33,12 +32,7 @@ export class TaskService {
     
     console.log(file);
     console.log('uploading...');
-
-    const bucket = this.config.get<string>('AWS_S3_BUCKET');
-    const access_key = this.config.get<string>('AWS_S3_ACCESS_KEY');
-    const key_secret = this.config.get<string>('AWS_S3_SECRET_KEY');
-    const s3_service = new S3Service(bucket, access_key, key_secret)
-    const uploadedFile = await s3_service.uploadFile(file);
+    const uploadedFile = await this.S3Service.uploadFile(file);
     console.log('complete...');
     console.log('uploaded_file:', uploadedFile);
 
