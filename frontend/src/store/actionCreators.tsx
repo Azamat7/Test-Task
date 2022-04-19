@@ -17,7 +17,7 @@ export async function addTask(task: TaskUpload, dispatch: DispatchType) {
   try{
     const res = await axios({
       method: "post",
-      url:`http://localhost:3001/tasks`,
+      url:`${process.env.REACT_APP_API_BASE}/tasks`,
       data: formData,
       headers: { "Content-Type": "multipart/form-data" },
     })
@@ -35,7 +35,7 @@ export async function addTask(task: TaskUpload, dispatch: DispatchType) {
 
 export async function getTasks(dispatch: DispatchType) {
   try{
-    const res = await axios.get(`http://localhost:3001/tasks`)
+    const res = await axios.get(`${process.env.REACT_APP_API_BASE}/tasks`)
     dispatch( {
         type: actionTypes.GET_TASKS,
         payload: res.data
@@ -44,11 +44,3 @@ export async function getTasks(dispatch: DispatchType) {
     console.log(e)
   }
 } 
-
-export function simulateHttpRequest(action: TaskAction) {
-  return (dispatch: DispatchType) => {
-    setTimeout(() => {
-      dispatch(action)
-    }, 500)
-  }
-}
