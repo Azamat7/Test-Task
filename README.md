@@ -1,5 +1,5 @@
 # Test-Task
-The app was written on React on the frontend and NestJS on the backend. Everything is written using Typescript.
+The app was written on React on the frontend and NestJS on the backend. Everything is written using Typescript. S3 Buckets are used to store images.
 
 ## Hosted version
 
